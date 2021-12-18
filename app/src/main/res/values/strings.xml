@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Maths Quiz</string>
+    <string name="false_button">False</string>
+    <string name="true_button">True</string>
+    <string name="question_text1" id="@id/question_text4">Does value of 5+2 equals 7?</string>
+    <string name="question_text2" id="@id/question_text4">Is 3 a prime number?</string>
+    <string name="question_text3" id="@id/question_text3">Is 20 a prime number?</string>
+    <string name="question_text4" id="@id/question_text4">Is 15 a prime number?</string>
+    <string name="question_text5" id="@id/question_text4">Is 31 a prime number?</string>
+    <string name="question_text6" id="@id/question_text4">Is 37 a prime number?</string>
+    <string name="sol1" id="@id/sol1">Yes</string>
+    <string name="sol2" id="@id/sol2">Yes</string>
+    <string name="sol3" id="@id/sol3">No</string>
+    <string name="sol4" id="@id/sol4">No</string>
+    <string name="sol5" id="@id/sol5">Yes</string>
+    <string name="sol6" id="@id/sol6">Yes</string>
+    <string name="correct_toast">👌</string>
+    <string name="incorrect_toast">😢</string>
+    <string name="true_button2">True</string>
+    <string name="false_button2">False</string>
+    <string name="next_button">Next</string>
+    <string name="cheat_button">Cheat</string>
+    <string name="ans_text1">answer for first question on the page is : </string>
+    <string name="ans_text2">answer for second question on the page is : </string>
+    <string name="submit_button">Submit</string>
+    <string name="final_result">Your marks are : </string>
+    <string name="TryAgain">TRY AGAIN</string>
+    <string name="quit" >QUIT</string>
+    <string name="permdesc_deadlyActivity">allow</string>
+</resources>
