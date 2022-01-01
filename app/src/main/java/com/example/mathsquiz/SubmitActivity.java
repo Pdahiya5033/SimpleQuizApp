@@ -6,11 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -20,10 +22,17 @@ public class SubmitActivity extends AppCompatActivity {
     private static final String ACT_KEY="ActKey";
     private static final String SUBMIT_KEY="RESULT";
     protected TextView mResult;
-    private Button mTryButton,mQuitButton;
-    public static Intent newSubmitIntent(Context context, int s){
+    private static int final_result;
+    private Button mTryButton,mQuitButton,mShareButton;
+    public static Intent newSubmitIntent(Context context, int s,boolean b){
         Intent intent = new Intent(context, SubmitActivity.class);
-        intent.putExtra(SUBMIT_KEY,s);
+        if(b==true){
+            intent.putExtra(SUBMIT_KEY,s-2);
+        }
+        else{
+            intent.putExtra(SUBMIT_KEY,s);
+        }
+        final_result=intent.getIntExtra(SUBMIT_KEY,0);
         return intent;
     }
     private void setActivityRes(int flag){
@@ -60,6 +69,29 @@ public class SubmitActivity extends AppCompatActivity {
                 setActivityRes(0);
                 Log.d(TAG_SUB,"quit pressed");
                 finish();
+            }
+        });
+        mShareButton=(Button) findViewById(R.id.share_button);
+        mShareButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                String[] TO={"parteekdahiya263@gmail.com"};
+                String[] CC={"pfffxy571@gmail.com"};
+                Intent emailIntent=new Intent(Intent.ACTION_SEND);
+                emailIntent.setData(Uri.parse("send image:"));
+                emailIntent.setType("text/plain");
+                emailIntent.putExtra(Intent.EXTRA_EMAIL,TO);
+                emailIntent.putExtra(Intent.EXTRA_CC,CC);
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT,"your subject");
+                emailIntent.putExtra(Intent.EXTRA_TEXT,"Marks obtained are: "+SubmitActivity.final_result);
+                try{
+                    startActivity(Intent.createChooser(emailIntent,"Send Mail...."));
+                    finish();
+                    Log.i(TAG_SUB,"finished sending mail");
+                }catch(android.content.ActivityNotFoundException e){
+                    Toast.makeText(SubmitActivity.this,"there is no email client installed",Toast.LENGTH_SHORT)
+                            .show();
+                }
             }
         });
 

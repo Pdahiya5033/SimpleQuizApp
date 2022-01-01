@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/ques_view1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:padding="24dp"
@@ -27,8 +27,8 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:autoSizeTextType="uniform"
-            android:text="@string/true_button"
-            android:drawableLeft="@drawable/images"/>
+            android:text="@string/true_button"/>
+
 
 
         <Button
@@ -41,7 +41,7 @@
     </LinearLayout>
     <TextView
         android:id="@+id/ques_view2"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:padding="24dp"

@@ -13,25 +13,29 @@
         android:layout_height="wrap_content"
         android:text="@string/ans_text1"
         android:layout_marginTop="15dp"
-        android:textSize="20dp"/>
+        android:textSize="20dp"
+        android:textColor="@color/teal_200"/>
     <TextView
         android:id="@+id/ans1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:textSize="20dp"/>
+        android:textSize="20dp"
+        android:textColor="@color/purple_200"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ans_text2"
         android:text="@string/ans_text2"
         android:layout_marginTop="70dp"
-        android:textSize="20dp"/>
+        android:textSize="20dp"
+        android:textColor="@color/teal_200"/>
     <TextView
         android:id="@+id/ans2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="85dp"
-        android:textSize="20dp" />
+        android:textSize="20dp"
+        android:textColor="@color/purple_200"/>
 
 </LinearLayout>

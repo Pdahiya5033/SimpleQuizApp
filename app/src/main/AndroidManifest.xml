@@ -6,7 +6,8 @@
         android:description="@string/permdesc_deadlyActivity"
         android:permissionGroup="android.permission-group.COST_MONEY"
         android:protectionLevel="dangerous"/>
-    <uses-permission-sdk-23 android:name="android.permission.SEND_SMS"/>
+    <uses-permission-sdk-23 android:name="android.permission.CALL_PHONE"/>
+    <uses-permission-sdk-23 android:name="android.permission.INTERNET"/>
     <application
 
         android:allowBackup="true"
@@ -21,8 +22,10 @@
         <activity
             android:name=".CheatActivity"
             android:exported="false" />
+        <activity android:name=".MainActivity"
+            android:exported="true"/>
         <activity
-            android:name=".MainActivity"
+            android:name=".LauncherActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

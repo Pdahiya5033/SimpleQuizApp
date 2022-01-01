@@ -20,12 +20,12 @@ public class CheatActivity extends AppCompatActivity {
     }
     protected TextView mAnsViewer1,mAnsViewer2;
     Answers[] answ = new Answers[]{
-            new Answers(R.string.sol1),
-            new Answers(R.string.sol2),
-            new Answers(R.string.sol3),
-            new Answers(R.string.sol4),
-            new Answers(R.string.sol5),
-            new Answers(R.string.sol6),
+            new Answers(LauncherActivity.mQuestions.get(0).getResult()),
+            new Answers(LauncherActivity.mQuestions.get(1).getResult()),
+            new Answers(LauncherActivity.mQuestions.get(2).getResult()),
+            new Answers(LauncherActivity.mQuestions.get(3).getResult()),
+            new Answers(LauncherActivity.mQuestions.get(4).getResult()),
+            new Answers(LauncherActivity.mQuestions.get(5).getResult()),
     };
 
     @Override
@@ -35,13 +35,27 @@ public class CheatActivity extends AppCompatActivity {
         Log.d(TAG,"in cheat activity");
         int i = getIntent().getIntExtra(CHEAT_KEY,-100);
         Log.d(TAG,"received value:"+i);
-        int ans1=0;
+        boolean ans1=true;
+        boolean ans2=true;
         mAnsViewer1=(TextView) findViewById(R.id.ans1);
-        ans1 = answ[i-1].getAns_id();
-        mAnsViewer1.setText(ans1);
+        ans1 = answ[i-1].getAns();
+        if(ans1==true){
+            mAnsViewer1.setText(R.string.ans_true);
+        }
+        else{
+            mAnsViewer1.setText(R.string.ans_false);
+        }
+
         mAnsViewer2  = (TextView) findViewById(R.id.ans2);
-        ans1=answ[i].getAns_id();
-        mAnsViewer2.setText(ans1);
+        ans2=answ[i].getAns();
+        if(ans2==true){
+            mAnsViewer1.setText(R.string.ans_true);
+            Log.i(TAG,"given 2nd answer");
+        }
+        else{
+            mAnsViewer1.setText(R.string.ans_false);
+            Log.i(TAG,"given 2nd answer");
+        }
         if(i>0){
             isCheated=true;
         }

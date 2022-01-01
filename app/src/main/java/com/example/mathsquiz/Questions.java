@@ -3,20 +3,30 @@ package com.example.mathsquiz;
 
 
 public class Questions{
-    private int ques_id;
+    private String quest;
     private boolean result;
-    public Questions(int ques_id,boolean result)
-    {
-        this.ques_id=ques_id;
-        this.result=result;
+    private String url;
+//    public Questions(){
+//
+//    }
+//    public Questions(String quest,boolean result)
+//    {
+//        this.quest=quest;
+//        this.result=result;
+//    }
+    public void setUrl(String url){
+        this.url=url;
     }
-    public int getQues_id()
-    {
-        return ques_id;
+    public String getUrl(){
+        return url;
     }
-    public void setQues_id(int ques_id)
+    public String getQues_id()
     {
-        this.ques_id=ques_id;
+        return quest;
+    }
+    public void setQues_id(String quest)
+    {
+        this.quest=quest;
     }
     public boolean getResult()
     {

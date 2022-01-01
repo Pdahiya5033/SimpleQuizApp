@@ -1,11 +1,15 @@
 package com.example.mathsquiz;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.util.Log;
@@ -15,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -33,16 +38,19 @@ public class MainActivity extends AppCompatActivity {
     private Button mCheatButton;
     private Button mSubmitButton;
     public int checkResume;
-    Questions[] quest = new Questions[]{
-            new Questions(R.string.question_text1,true),
-            new Questions(R.string.question_text2,true),
-            new Questions(R.string.question_text3,false),
-            new Questions(R.string.question_text4,false),
-            new Questions(R.string.question_text5,true),
-            new Questions(R.string.question_text6,true),
-    };
+    private List<Questions> mQuestions=new ArrayList<>();
+//    Questions[] quest = new Questions[]{
+//            new Questions(R.string.question_text1,true),
+//            new Questions(R.string.question_text2,true),
+//            new Questions(R.string.question_text3,false),
+//            new Questions(R.string.question_text4,false),
+//            new Questions(R.string.question_text5,true),
+//            new Questions(R.string.question_text6,true),
+//    };
+
     private int index=0;
     private int final_result = 0;
+    private boolean deduction=false;
     public void display_text()
     {
         if(index==5)
@@ -52,13 +60,13 @@ public class MainActivity extends AppCompatActivity {
         else
             index=index%6+1;
         mQuestionViewer1=(TextView) findViewById(R.id.ques_view1);
-        int question1 = quest[index].getQues_id();
+        String question1 = LauncherActivity.mQuestions.get(index).getQues_id();
         mQuestionViewer1.setText(question1);
         mTrueButton = (Button) findViewById(R.id.true_button);
         mTrueButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if(quest[index].getResult()==true)
+                if(LauncherActivity.mQuestions.get(index).getResult()==true)
                 {
                     Toast.makeText(MainActivity.this,R.string.correct_toast,Toast.LENGTH_SHORT).show();
                     final_result++;
@@ -72,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         mFalseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(quest[index].getResult()==false)
+                if(LauncherActivity.mQuestions.get(index).getResult()==false)
                 {
                     Toast to=Toast.makeText(MainActivity.this,R.string.correct_toast,Toast.LENGTH_SHORT);
                     to.show();
@@ -86,13 +94,13 @@ public class MainActivity extends AppCompatActivity {
         // 2nd question
         index=1+index%6;
         mQuestionViewer2=(TextView) findViewById(R.id.ques_view2);
-        int question2=quest[index].getQues_id();
+        String question2=LauncherActivity.mQuestions.get(index).getQues_id();
         mQuestionViewer2.setText(question2);
         mTrueButton2 = (Button) findViewById(R.id.true_button2);
         mTrueButton2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if(quest[index].getResult()==true){
+                if(LauncherActivity.mQuestions.get(index).getResult()==true){
                     Toast.makeText(MainActivity.this,R.string.correct_toast,Toast.LENGTH_SHORT).show();
                     final_result++;
                 }
@@ -105,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         mFalseButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(quest[index].getResult()==false)
+                if(LauncherActivity.mQuestions.get(index).getResult()==false)
                 {
                     Toast to=Toast.makeText(MainActivity.this,R.string.correct_toast,Toast.LENGTH_SHORT);
                     to.show();
@@ -129,13 +137,14 @@ public class MainActivity extends AppCompatActivity {
         if(savedInstanceState!=null){
             index=savedInstanceState.getInt(KEY_INDEX,0)-1;
         }
-        int question1 = quest[index].getQues_id();
+//
+        String question1=LauncherActivity.mQuestions.get(index).getQues_id();
         mQuestionViewer1.setText(question1);
         mTrueButton = (Button) findViewById(R.id.true_button);
         mTrueButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if(quest[index].getResult()==true)
+                if(LauncherActivity.mQuestions.get(index).getResult()==true)
                 {
                     Toast.makeText(MainActivity.this,R.string.correct_toast,Toast.LENGTH_SHORT).show();
                     final_result++;
@@ -149,9 +158,9 @@ public class MainActivity extends AppCompatActivity {
         mFalseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(quest[index].getResult()==false)
+                if(LauncherActivity.mQuestions.get(index).getResult()==false)
                 {
-                    Toast to=Toast.makeText(MainActivity.this,R.string.incorrect_toast,Toast.LENGTH_SHORT);
+                    Toast to=Toast.makeText(MainActivity.this,R.string.correct_toast,Toast.LENGTH_SHORT);
                     to.show();
                     final_result++;
                 }
@@ -163,24 +172,30 @@ public class MainActivity extends AppCompatActivity {
         // 2nd question
         mQuestionViewer2=(TextView) findViewById(R.id.ques_view2);
         index=index+1;
-        int question2 = quest[index].getQues_id();
+        String question2 = LauncherActivity.mQuestions.get(index).getQues_id();
         mQuestionViewer2.setText(question2);
         mTrueButton2 = (Button) findViewById(R.id.true_button2);
         mTrueButton2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if(quest[index].getResult()==true)
+                if(LauncherActivity.mQuestions.get(index).getResult()==true)
+                {
                     Toast.makeText(MainActivity.this,R.string.correct_toast,Toast.LENGTH_SHORT).show();
-                final_result++;
+                    final_result++;
+                }
+                else{
+                    Toast.makeText(MainActivity.this,R.string.incorrect_toast,Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
         mFalseButton2 = (Button) findViewById(R.id.false_button2);
         mFalseButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(quest[index].getResult()==false)
+                if(LauncherActivity.mQuestions.get(index).getResult()==false)
                 {
-                    Toast to=Toast.makeText(MainActivity.this,R.string.incorrect_toast,Toast.LENGTH_SHORT);
+                    Toast to=Toast.makeText(MainActivity.this,R.string.correct_toast,Toast.LENGTH_SHORT);
                     to.show();
                     final_result++;
                 }
@@ -203,6 +218,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG,"cheat pressed");
+                deduction=true;
+                final_result=final_result-2;
                 Intent i = CheatActivity.newIntent(MainActivity.this,index);
 //                startActivity(i);
                 startActivityForResult(i,REQUEST_CHEAT_CODE);
@@ -213,9 +230,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 Log.d(TAG,"submit pressed");
+
 //                Intent s = new Intent(MainActivity.this,SubmitActivity.class);
-                Intent s = SubmitActivity.newSubmitIntent(MainActivity.this,final_result);
+                Intent s = SubmitActivity.newSubmitIntent(MainActivity.this,final_result,deduction);
                 startActivityForResult(s,REQUEST_SUBMIT_CODE);
+                if(final_result<=3){
+                    Toast.makeText(MainActivity.this,"Connecting to your mentor",Toast.LENGTH_SHORT).show();
+                    makeCall();
+
+                }
+
                 // FOR opening webpage
 //                Uri webpage = Uri.parse("https://www.android.com");
                 // for location
@@ -227,7 +251,8 @@ public class MainActivity extends AppCompatActivity {
 //                Intent callIntent=new Intent(Intent.ACTION_VIEW,number);
 //                startActivity(callIntent);
                 // for dialing number
-                //Uri dial=Uri.parse("tel:123456");
+
+
 //                Intent calendarIntent=new Intent(Intent.ACTION_INSERT, CalendarContract.Events.CONTENT_URI);
 //                Calendar beginTime=Calendar.getInstance();
 //                beginTime.set(2021,12,9,10,50);
@@ -253,27 +278,43 @@ public class MainActivity extends AppCompatActivity {
 //                if(intent.resolveActivity(getPackageManager())!=null){
 //                    startActivity(chooser);
 //                }
-                String[] TO={"parteekdahiya263@gmail.com"};
-                String[] CC={"pfffxy571@gmail.com"};
-                Intent emailIntent=new Intent(Intent.ACTION_SEND);
-                emailIntent.setData(Uri.parse("send image:"));
-                emailIntent.setType("text/plain");
-                emailIntent.putExtra(Intent.EXTRA_EMAIL,TO);
-                emailIntent.putExtra(Intent.EXTRA_CC,CC);
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT,"your subject");
-                emailIntent.putExtra(Intent.EXTRA_TEXT,"Email message goes here:");
-                try{
-                    startActivity(Intent.createChooser(emailIntent,"Send Mail...."));
-                    finish();
-                    Log.i(TAG,"finished sending mail");
-                }catch(android.content.ActivityNotFoundException e){
-                    Toast.makeText(MainActivity.this,"there is no email client installed",Toast.LENGTH_SHORT)
-                            .show();
-                }
+
             }
         });
     }
+    public void makeCall(){
+        try{
+            if(Build.VERSION.SDK_INT>22){
+                if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE)
+                        !=PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(MainActivity.this,new String[]{
+                            Manifest.permission.CALL_PHONE},101);
+                    return;
+                }
+                Uri passNo=Uri.parse("tel:8168977083");
+                Intent callMaker=new Intent(Intent.ACTION_CALL,passNo);
+                startActivity(callMaker);
 
+        }
+            else{
+                Uri passNo=Uri.parse("tel:8168977083");
+                Intent callMaker=new Intent(Intent.ACTION_CALL,passNo);
+                startActivity(callMaker);
+            }
+    }catch (Exception exc){
+                Log.e(TAG,"error in making call");
+        }
+
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,String[] permissions,int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 101) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                makeCall();
+            }
+        }
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
@@ -334,5 +375,17 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         Log.d(TAG,"in onStop");
     }
+//    private class FetchQuestions extends AsyncTask<Void,Void,List<Questions>>{
+//
+//        @Override
+//        protected List<Questions> doInBackground(Void... voids) {
+//            return new TriviaFetcher().fetchItems();
+//        }
+//
+//        @Override
+//        protected void onPostExecute(List<Questions> questions){
+//            mQuestions=questions;
+//        }
+//    }
 
 }
